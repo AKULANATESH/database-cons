@@ -5,9 +5,11 @@ export class UserService {
   getUser(): string {
     return 'User';
   }
+  
   addUser(): string{
     return "added user ";
   }
+
   updateUser(): string{
     return "update user ";
   }
@@ -15,5 +17,4 @@ export class UserService {
   deleteUser(): string{
     return "delete user ";
   }
-
 }
