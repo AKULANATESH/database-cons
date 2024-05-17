@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-// @Injectable()
-// export class UserService {
-  // #users
+
   export const usersList  = 
   [ {
     id : 1,
