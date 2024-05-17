@@ -1,6 +1,7 @@
-import { Controller, Get, Post ,Put,Delete,Body,Param} from '@nestjs/common';
+import { Controller, Get, Post , Put, Delete, Body, Param} from '@nestjs/common';
 
 import { UserService } from './user.service';
+import { User } from './user.types';
 
 @Controller("user")
 export class UserController{
@@ -12,19 +13,19 @@ export class UserController{
   }
 
   @Post("add")
-  async addUser(@Body() userData: any): Promise<string> {
-    const result = await this.userService.addUser(userData);
+  async addUser(@Body() userData: User): Promise<User> {
+    const result = this.userService.addUser(userData);
     return result;
   };
   
   @Put("update")
-  updateUser():string{
-    return this.userService.updateuser();
+  updateUser(@Body() userData: User):string{
+    return this.userService.updateUser(userData);
   }
 
   @Delete("delete/:id")
   async deleteUser( @Param('id') userId: number):Promise<string> {
-    const result = await this.userService.deleteUser(userId);
+    const result = this.userService.deleteUser(userId);
     return result;
   }
 } 
