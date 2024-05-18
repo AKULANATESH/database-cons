@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { User } from './user.types';
 
@@ -17,17 +16,15 @@ export class UserService {
     } else {
       return 'user not found';
     }
-    // return only individual user
   }
 
   addUser(newUser: User): User | string {
-    const Emailexists = this.usersList.find(
+    const emailExists = this.usersList.find(
       (user) => user.email === newUser.email,
     );
-    if (Emailexists) {
+    if (emailExists) {
       return ' email already exists ';
     }
-    // validation user email already exists
     this.usersList.push(newUser);
     return newUser;
   }
