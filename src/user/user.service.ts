@@ -1,20 +1,35 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './user.types';
+import { User, UserDocument } from './user.schema';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class UserService {
   usersList: User[] = [];
-
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
   getUsers(): any {
     return this.usersList;
   }
 
-  getUser(userName: string): User | string {
-    const user = this.usersList.find((user) => user.name === userName);
+  getUser(userId: number): User | string {
+    const user = this.usersList.find((user) => user.id === userId);
     if (user) {
       return user;
     } else {
       return 'user not found';
+    }
+  }
+
+  searchUser(query: string): User[] | string {
+    const search = this.usersList.filter(
+      (user) =>
+        user.name.toLowerCase().includes(query.toLowerCase()) ||
+        user.email.toLowerCase().includes(query.toLowerCase()),
+    );
+    if (search) {
+      return search;
+    } else {
+      return ' user not found ';
     }
   }
 

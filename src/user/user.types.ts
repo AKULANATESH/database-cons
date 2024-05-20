@@ -1,4 +1,4 @@
-export interface User {
+export interface todo {
   id: number;
   name: string;
   age: number;

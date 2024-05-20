@@ -6,24 +6,29 @@ import {
   Delete,
   Body,
   Param,
+  Query,
 } from '@nestjs/common';
 
 import { UserService } from './user.service';
-import { User } from './user.types';
+import { User } from './user.schema';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-  //  @Get()
-  //  getUsers()
   @Get()
   getUsers(): string {
     return this.userService.getUsers();
   }
 
-  @Get('/:name')
-  async getUser(@Param('name') userName: string): Promise<User | string> {
-    return this.userService.getUser(userName);
+  @Get('/:id')
+  async getUser(@Param('id') userId: string): Promise<string | User> {
+    const result = this.userService.getUser(parseInt(userId));
+    return result;
+  }
+
+  @Get('/:name' && '/:email')
+  async searchUser(@Query('query') query: string): Promise<User[] | string> {
+    return this.userService.searchUser(query);
   }
 
   @Post('add')
