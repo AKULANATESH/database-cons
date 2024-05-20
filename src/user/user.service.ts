@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { User, UserDocument } from './user.schema';
+import { User } from './user.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class UserService {
   usersList: User[] = [];
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(@InjectModel(User.name, 'nest') private userModel: Model<User>) {}
   getUsers(): any {
     return this.usersList;
   }
@@ -33,15 +33,15 @@ export class UserService {
     }
   }
 
-  addUser(newUser: User): User | string {
+  async addUser(newUser: User): Promise<string | User> {
     const emailExists = this.usersList.find(
       (user) => user.email === newUser.email,
     );
     if (emailExists) {
       return ' email already exists ';
     }
-    this.usersList.push(newUser);
-    return newUser;
+    const addedUser = await this.userModel.create(newUser);
+    return addedUser;
   }
 
   updateUser(updatedUser: User): string {
@@ -49,7 +49,7 @@ export class UserService {
       (user) => user.id === updatedUser.id,
     );
     if (userIdx !== -1) {
-      this.usersList[userIdx] = { ...this.usersList[userIdx], ...updatedUser };
+      // this.usersList[userIdx] = { ...this.usersList[userIdx], ...updatedUser };
       return 'User updated successfully!';
     } else {
       return 'User not found!';

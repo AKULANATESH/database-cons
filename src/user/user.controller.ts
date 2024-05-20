@@ -26,7 +26,7 @@ export class UserController {
     return result;
   }
 
-  @Get('/:name' && '/:email')
+  @Get('/:email')
   async searchUser(@Query('query') query: string): Promise<User[] | string> {
     return this.userService.searchUser(query);
   }
