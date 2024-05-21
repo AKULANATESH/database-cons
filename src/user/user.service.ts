@@ -5,64 +5,50 @@ import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class UserService {
-  usersList: User[] = [];
-  constructor(@InjectModel(User.name, 'nest') private userModel: Model<User>) {}
-  getUsers(): any {
-    return this.usersList;
+  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+
+  async getUsers(): Promise<User[]> {
+    return this.userModel.find().exec();
   }
 
-  getUser(userId: number): User | string {
-    const user = this.usersList.find((user) => user.id === userId);
-    if (user) {
-      return user;
-    } else {
-      return 'user not found';
-    }
+  async getUser(userId: string): Promise<string | User> {
+    // userId should be string to match ObjectId type
+    const user = await this.userModel.findById(userId).exec();
+    return user || 'User not found';
   }
 
-  searchUser(query: string): User[] | string {
-    const search = this.usersList.filter(
-      (user) =>
-        user.name.toLowerCase().includes(query.toLowerCase()) ||
-        user.email.toLowerCase().includes(query.toLowerCase()),
-    );
-    if (search) {
-      return search;
-    } else {
-      return ' user not found ';
-    }
+  async searchUser(query: string): Promise<User[] | string> {
+    const searchResults = await this.userModel
+      .find({
+        $or: [
+          { name: { $regex: query, $options: 'i' } },
+          { email: { $regex: query, $options: 'i' } },
+        ],
+      })
+      .exec();
+    return searchResults.length ? searchResults : 'User not found';
   }
 
   async addUser(newUser: User): Promise<string | User> {
-    const emailExists = this.usersList.find(
-      (user) => user.email === newUser.email,
-    );
+    const emailExists = await this.userModel
+      .findOne({ email: newUser.email })
+      .exec();
     if (emailExists) {
-      return ' email already exists ';
+      return 'Email already exists';
     }
     const addedUser = await this.userModel.create(newUser);
     return addedUser;
   }
 
-  updateUser(updatedUser: User): string {
-    const userIdx = this.usersList.findIndex(
-      (user) => user.id === updatedUser.id,
-    );
-    if (userIdx !== -1) {
-      // this.usersList[userIdx] = { ...this.usersList[userIdx], ...updatedUser };
-      return 'User updated successfully!';
-    } else {
-      return 'User not found!';
-    }
+  async updateUser(updatedUser: User): Promise<string> {
+    const result = await this.userModel
+      .findByIdAndUpdate(updatedUser.id, updatedUser, { new: true }) //logicmiss in this line//
+      .exec();
+    return result ? 'User updated successfully!' : 'User not found!';
   }
 
-  deleteUser(userId: number): string {
-    const userIndex = this.usersList.findIndex((user) => user.id === userId);
-    if (userIndex !== -1) {
-      this.usersList.splice(userIndex, 1);
-      return 'User deleted successfully!';
-    } else {
-      return 'User not found!';
-    }
+  async deleteUser(userId: string): Promise<string> {
+    const result = await this.userModel.findByIdAndDelete(userId).exec();
+    return result ? 'User deleted successfully!' : 'User not found!';
   }
 }

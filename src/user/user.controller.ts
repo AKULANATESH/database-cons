@@ -16,13 +16,14 @@ import { User } from './user.schema';
 export class UserController {
   constructor(private readonly userService: UserService) {}
   @Get()
-  getUsers(): string {
-    return this.userService.getUsers();
+  async getUsers(): Promise<User[]> {
+    const ab = await this.userService.getUsers();
+    return ab;
   }
 
   @Get('/:id')
   async getUser(@Param('id') userId: string): Promise<string | User> {
-    const result = this.userService.getUser(parseInt(userId));
+    const result = this.userService.getUser(userId);
     return result;
   }
 
@@ -37,13 +38,13 @@ export class UserController {
   }
 
   @Put('update')
-  updateUser(@Body() userData: User): string {
-    return this.userService.updateUser(userData);
+  async updateUser(@Body() userData: User): Promise<string | User> {
+    const updatedusers = await this.userService.updateUser(userData);
+    return updatedusers;
   }
 
-  @Delete('delete/:id')
-  async deleteUser(@Param('id') userId: string): Promise<string> {
-    const result = this.userService.deleteUser(parseInt(userId));
-    return result;
+  @Delete('delete/:_id')
+  async deleteUser(@Param('_id') userId: string): Promise<string> {
+    return this.userService.deleteUser(userId);
   }
 }
