@@ -7,32 +7,26 @@ import { InjectModel } from '@nestjs/mongoose';
 export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
-  async getUsers(): Promise<User[]> {
-    return this.userModel.find().exec();
-  }
-
-  async getUser(userId: string): Promise<string | User> {
-    // userId should be string to match ObjectId type
-    const user = await this.userModel.findById(userId).exec();
-    return user || 'User not found';
-  }
-
-  async searchUser(query: string): Promise<User[] | string> {
-    const searchResults = await this.userModel
-      .find({
+  async getUsers(query: string): Promise<User[]> {
+    if (query) {
+      const searchResults = await this.userModel.find({
         $or: [
           { name: { $regex: query, $options: 'i' } },
           { email: { $regex: query, $options: 'i' } },
         ],
-      })
-      .exec();
-    return searchResults.length ? searchResults : 'User not found';
+      });
+      return searchResults;
+    }
+    return await this.userModel.find();
+  }
+
+  async getUser(userId: string): Promise<string | User> {
+    const user = await this.userModel.findById(userId);
+    return user || 'User not found';
   }
 
   async addUser(newUser: User): Promise<string | User> {
-    const emailExists = await this.userModel
-      .findOne({ email: newUser.email })
-      .exec();
+    const emailExists = await this.userModel.findOne({ email: newUser.email });
     if (emailExists) {
       return 'Email already exists';
     }
@@ -41,14 +35,16 @@ export class UserService {
   }
 
   async updateUser(updatedUser: User): Promise<string> {
-    const result = await this.userModel
-      .findByIdAndUpdate(updatedUser.id, updatedUser, { new: true }) //logicmiss in this line//
-      .exec();
+    const result = await this.userModel.findByIdAndUpdate(
+      updatedUser._id,
+      updatedUser,
+      { new: true },
+    );
     return result ? 'User updated successfully!' : 'User not found!';
   }
 
   async deleteUser(userId: string): Promise<string> {
-    const result = await this.userModel.findByIdAndDelete(userId).exec();
+    const result = await this.userModel.findByIdAndDelete(userId);
     return result ? 'User deleted successfully!' : 'User not found!';
   }
 }
