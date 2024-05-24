@@ -5,7 +5,6 @@ import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
-  // constructor(@InjectModel(User.name) private userModel: Model<User>) {}
   constructor(private userRepository: UserRepository) {}
 
   async getUsers(query: string): Promise<User[]> {
@@ -18,7 +17,7 @@ export class UserService {
       });
       return searchResults;
     }
-    return await this.userRepository.find();
+    return await this.userRepository.find(User);
   }
 
   async getUser(userId: string): Promise<string | User> {
@@ -29,7 +28,7 @@ export class UserService {
     return user;
   }
 
-  async addUser(newUser: User): Promise<string | User> {
+  async addUser(newUser: User): Promise<User | string> {
     const emailExists = await this.userRepository.findOne({
       email: newUser.email,
     });
@@ -60,68 +59,3 @@ export class UserService {
     return 'User deleted successfully!';
   }
 }
-
-// // src/user/user.service.ts
-
-// import {
-//   Injectable,
-//   NotFoundException,
-//   BadRequestException,
-// } from '@nestjs/common';
-// import { UserRepository } from './user.repository';
-// import { User } from './user.schema';
-// import { isValidObjectId } from 'mongoose';
-
-// @Injectable()
-// export class UserService {
-//   constructor(private userRepository: UserRepository) {}
-
-//   async getUsers(): Promise<User[]> {
-//     const users = await this.userRepository.findAll();
-//     if (!users) {
-//       throw new NotFoundException('No users found');
-//     }
-//     return users;
-//   }
-
-//   async getUser(userId: string): Promise<string | User> {
-//     const user = await this.userRepository.findById(userId);
-//     if (!user) {
-//       throw new NotFoundException('User with ID ${user_id} not found');
-//     }
-//     return user;
-//   }
-
-//   async addUser(newUser: User): Promise<User> {
-//     const emailExists = await this.userRepository.findByEmail(newUser.email);
-//     if (emailExists) {
-//       throw new BadRequestException('Email already exists');
-//     }
-//     return this.userRepository.create(newUser);
-//   }
-
-//   async updateUser(updatedUser: User): Promise<User> {
-//     if (!isValidObjectId(updatedUser._id)) {
-//       throw new BadRequestException(`Invalid ID format: ${updatedUser._id}`);
-//     }
-//     const result = await this.userRepository.update(
-//       updatedUser.id,
-//       updatedUser,
-//     );
-//     if (!result) {
-//       throw new NotFoundException(`User with ID ${updatedUser._id} not found`);
-//     }
-//     return result;
-//   }
-
-//   async deleteUser(userId: string): Promise<string> {
-//     if (!isValidObjectId(userId)) {
-//       throw new BadRequestException(`Invalid ID format: ${userId}`);
-//     }
-//     const result = await this.userRepository.delete(userId);
-//     if (!result) {
-//       throw new NotFoundException(`User with ID ${userId} not found`);
-//     }
-//     return 'User deleted successfully!';
-//   }
-// }

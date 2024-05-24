@@ -1,5 +1,3 @@
-// src/user/user.repository.ts
-
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
@@ -7,31 +5,34 @@ import { User } from './user.schema';
 
 @Injectable()
 export class UserRepository {
-  [x: string]: any;
+  findOne: any;
+  findByIdAndUpdate: any;
+  findByIdAndDelete: any;
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
   async create(user: User): Promise<User> {
-    const newUser = new this.userModel(user);
-    return newUser.save();
+    const newUser = await this.userModel.create(user);
+    return newUser;
   }
 
-  async findAll(): Promise<User[]> {
-    return this.userModel.find();
+  async find(user): Promise<User[]> {
+    return await this.userModel.find(user);
   }
 
-  async findById(id: string): Promise<User> {
-    return this.userModel.findById(id);
+  async findById(_id: string): Promise<User> {
+    return await this.userModel.findById(_id);
   }
 
   async findByEmail(email: string): Promise<User> {
-    return this.userModel.findOne({ email });
+    return await this.userModel.findOne({ email });
   }
 
-  async update(id: string, user: Partial<User>): Promise<User> {
-    return this.userModel.findByIdAndUpdate(id, user, { new: true });
+  async update(id: string, user: Partial<Omit<User, '_id'>>): Promise<User> {
+    return await this.userModel.findByIdAndUpdate(id, user, { new: true });
   }
 
-  async delete(id: string): Promise<User> {
-    return this.userModel.findByIdAndDelete(id);
+  async delete(id: string): Promise<string> {
+    await this.userModel.findByIdAndDelete(id);
+    return `User with ID ${id} deleted`;
   }
 }
