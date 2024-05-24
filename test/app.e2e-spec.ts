@@ -19,15 +19,15 @@ describe('UserModule (e2e)', () => {
     await app.close();
   });
 
-  it('POST /users', async () => {
+  it('POST /user', async () => {
     const createUser = {
       name: 'John Doe',
-      email: 'john.doe@example.com',
+      email: `${new Date().toISOString()}.jane.doe@example.com`,
       age: 30,
     };
 
     const response = await request(app.getHttpServer())
-      .post('/users')
+      .post('/user')
       .send(createUser)
       .expect(201);
 
@@ -39,22 +39,22 @@ describe('UserModule (e2e)', () => {
     });
   });
 
-  it('GET /users/:id', async () => {
+  it('GET /user/:id', async () => {
     const createUser = {
       name: 'Jane Doe',
-      email: 'jane.doe@example.com',
+      email: `${new Date().toISOString()}.jane.doe@example.com`,
       age: 25,
     };
 
     const createUserResponse = await request(app.getHttpServer())
-      .post('/users')
+      .post('/user')
       .send(createUser)
       .expect(201);
 
     const userId = createUserResponse.body._id;
 
     const response = await request(app.getHttpServer())
-      .get(`/users/${userId}`)
+      .get(`/user/${userId}`)
       .expect(200);
 
     expect(response.body).toMatchObject({
@@ -65,15 +65,15 @@ describe('UserModule (e2e)', () => {
     });
   });
 
-  it('PUT /users/:id', async () => {
+  it('PUT /user/:id', async () => {
     const createUser = {
       name: 'Alice Doe',
-      email: 'alice.doe@example.com',
+      email: `${new Date().toISOString()}.jane.doe@example.com`,
       age: 28,
     };
 
     const createUserResponse = await request(app.getHttpServer())
-      .post('/users')
+      .post('/user')
       .send(createUser)
       .expect(201);
 
@@ -81,12 +81,12 @@ describe('UserModule (e2e)', () => {
 
     const updateUser = {
       name: 'Alice Johnson',
-      email: 'alice.johnson@example.com',
+      email: `${new Date().toISOString()}.jane.doe@example.com`,
       age: 29,
     };
 
     const response = await request(app.getHttpServer())
-      .put(`/users/${userId}`)
+      .put(`/user/${userId}`)
       .send(updateUser)
       .expect(200);
 
@@ -98,22 +98,22 @@ describe('UserModule (e2e)', () => {
     });
   });
 
-  it('DELETE /users/:id', async () => {
+  it('DELETE /user/:id', async () => {
     const createUser = {
       name: 'Bob Doe',
-      email: 'bob.doe@example.com',
+      email: `${new Date().toISOString()}.jane.doe@example.com`,
       age: 35,
     };
 
     const createUserResponse = await request(app.getHttpServer())
-      .post('/users')
+      .post('/user')
       .send(createUser)
       .expect(201);
 
     const userId = createUserResponse.body._id;
 
-    await request(app.getHttpServer()).delete(`/users/${userId}`).expect(200);
+    await request(app.getHttpServer()).delete(`/user/${userId}`).expect(200);
 
-    await request(app.getHttpServer()).get(`/users/${userId}`).expect(404);
+    await request(app.getHttpServer()).get(`/user/${userId}`).expect(404);
   });
 });

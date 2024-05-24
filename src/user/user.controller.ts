@@ -11,6 +11,7 @@ import {
 
 import { UserService } from './user.service';
 import { User } from './user.schema';
+import { AddUserDto, UpdateUserDto } from './user.dto';
 
 @Controller('user')
 export class UserController {
@@ -27,19 +28,22 @@ export class UserController {
     return result;
   }
 
-  @Post('add')
-  async addUser(@Body() userData: User): Promise<string | User> {
+  @Post()
+  async addUser(@Body() userData: AddUserDto): Promise<string | User> {
     return await this.userService.addUser(userData);
   }
 
-  @Put('update')
-  async updateUser(@Body() userData: User): Promise<string | User> {
-    const updatedUser = await this.userService.updateUser(userData);
+  @Put('/:id')
+  async updateUser(
+    @Body() userData: UpdateUserDto,
+    @Param('id') userId: string,
+  ): Promise<string | User> {
+    const updatedUser = await this.userService.updateUser(userData, userId);
     return updatedUser;
   }
 
-  @Delete('delete/:_id')
-  async deleteUser(@Param('_id') userId: string): Promise<string> {
+  @Delete('/:id')
+  async deleteUser(@Param('id') userId: string): Promise<string> {
     return await this.userService.deleteUser(userId);
   }
 }
