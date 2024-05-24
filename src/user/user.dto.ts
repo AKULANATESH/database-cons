@@ -26,10 +26,6 @@ export class AddUserDto {
 export class UpdateUserDto {
   @IsString()
   @IsNotEmpty()
-  id: string;
-
-  @IsString()
-  @IsNotEmpty()
   name: string;
 
   @IsString()
