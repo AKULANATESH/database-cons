@@ -39,6 +39,26 @@ describe('UserModule (e2e)', () => {
     });
   });
 
+  it('POST /user/add', async () => {
+    const createUser = {
+      name: 'John Doe',
+      email: `${new Date().toISOString()}.jane.doe@example.com`,
+      age: 30,
+    };
+
+    const response = await request(app.getHttpServer())
+      .post('/user/add')
+      .send(createUser)
+      .expect(201);
+
+    expect(response.body).toMatchObject({
+      _id: expect.any(String),
+      name: createUser.name,
+      email: createUser.email,
+      age: createUser.age,
+    });
+  });
+
   it('GET /user/:id', async () => {
     const createUser = {
       name: 'Jane Doe',
@@ -115,5 +135,47 @@ describe('UserModule (e2e)', () => {
     await request(app.getHttpServer()).delete(`/user/${userId}`).expect(200);
 
     await request(app.getHttpServer()).get(`/user/${userId}`).expect(404);
+  });
+
+  it('POST /user', async () => {
+    const createUser = {
+      name: 90,
+      email: 'mrmskjsj@emadil.com',
+      age: 'jon doe',
+    };
+
+    const response = await request(app.getHttpServer())
+      .post('/user')
+      .send(createUser)
+      .expect(409);
+  });
+
+  it('POST /user/add', async () => {
+    const createUser = {
+      name: 'jon doe',
+      email: '2024-05-25T06:12:57.959Z.jane.doe@example.com',
+      age: 30,
+    };
+
+    const response = await request(app.getHttpServer())
+      .post('/user/add')
+      .send(createUser)
+      .expect(409);
+  });
+
+  it('GET /user/:id ', async () => {
+    const nonExistentId = '664cb4ae4842121a8e50af7d';
+    const response = await request(app.getHttpServer())
+      .get(`/user/${nonExistentId}`)
+      .expect(404);
+    expect(response.body).toHaveProperty('error', 'Not Found');
+  });
+
+  it('PUT /user/:id', async () => {
+    const nonExistentId = '664cb4ae4842121a8e50af7d';
+    const response = await request(app.getHttpServer())
+      .put(`/user/${nonExistentId}`)
+      .expect(404);
+    expect(response.body).toHaveProperty('error', 'Not Found');
   });
 });

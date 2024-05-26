@@ -11,7 +11,7 @@ import {
 
 import { UserService } from './user.service';
 import { User } from './user.schema';
-import { AddUserDto, UpdateUserDto } from './user.dto';
+import { AddUserDto, CreateUserDto, UpdateUserDto } from './user.dto';
 
 @Controller('user')
 export class UserController {
@@ -31,6 +31,11 @@ export class UserController {
   @Post()
   async addUser(@Body() userData: AddUserDto): Promise<string | User> {
     return await this.userService.addUser(userData);
+  }
+
+  @Post('add')
+  async createUser(@Body() createUser: CreateUserDto): Promise<string | User> {
+    return await this.userService.createUser(createUser);
   }
 
   @Put('/:id')
