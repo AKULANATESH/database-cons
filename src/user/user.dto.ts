@@ -45,3 +45,9 @@ export class UpdateUserDto {
   @Min(5)
   age: number;
 }
+export interface UserSearchCriteria {
+  name?: string;
+  email?: string;
+  age?: number;
+  // Add other search criteria as needed
+}

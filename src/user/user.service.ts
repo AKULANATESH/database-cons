@@ -11,19 +11,25 @@ import { AddUserDto, CreateUserDto, UpdateUserDto } from './user.dto';
 export class UserService {
   constructor(private userRepository: UserRepository) {}
 
-  async getUsers(query: AddUserDto): Promise<User[]> {
-    if (query?.$or) {
-      // Check if $or property exists
+  async getUsers(query: string): Promise<User[]> {
+    if (query) {
       const searchResults = await this.userRepository.find({
-        $or: query.$or,
+        $or: [
+          { name: { $regex: query, $options: 'i' } },
+          { email: { $regex: query, $options: 'i' } },
+        ],
         name: '',
         email: '',
         age: 0,
       });
       return searchResults;
     }
-    // Handle case where $or is not provided
-    return await this.userRepository.find(query); // Original query logic
+    return await this.userRepository.find({
+      User,
+      name: '',
+      email: '',
+      age: 0,
+    });
   }
 
   async getUser(userId: string): Promise<User> {

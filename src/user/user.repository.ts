@@ -13,8 +13,8 @@ export class UserRepository {
     return newUser;
   }
 
-  async find(User: AddUserDto): Promise<User[]> {
-    return await this.userModel.find({ User });
+  async find(user: AddUserDto): Promise<User[]> {
+    return await this.userModel.find({ user });
   }
 
   async findById(_id: string): Promise<User> {
