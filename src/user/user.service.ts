@@ -11,20 +11,22 @@ import { AddUserDto, CreateUserDto, UpdateUserDto } from './user.dto';
 export class UserService {
   constructor(private userRepository: UserRepository) {}
 
-  async getUsers(query: string): Promise<User[]> {
-    if (query) {
+  async getUsers(query: AddUserDto): Promise<User[]> {
+    if (query?.$or) {
+      // Check if $or property exists
       const searchResults = await this.userRepository.find({
-        $or: [
-          { name: { $regex: query, $options: 'i' } },
-          { email: { $regex: query, $options: 'i' } },
-        ],
+        $or: query.$or,
+        name: '',
+        email: '',
+        age: 0,
       });
       return searchResults;
     }
-    return await this.userRepository.find(query);
+    // Handle case where $or is not provided
+    return await this.userRepository.find(query); // Original query logic
   }
 
-  async getUser(userId: string): Promise<string | User> {
+  async getUser(userId: string): Promise<User> {
     const user = await this.userRepository.findById(userId);
     if (!user) {
       throw new NotFoundException('User with ID ${user_id} not found');
@@ -41,7 +43,7 @@ export class UserService {
     return addedUser;
   }
 
-  async createUser(createUser: CreateUserDto): Promise<User | string> {
+  async createUser(createUser: CreateUserDto): Promise<string | User> {
     const emailExists = await this.userRepository.findByEmail(createUser.email);
     if (emailExists) {
       throw new ConflictException('Product with this email already exists');

@@ -17,7 +17,7 @@ import { AddUserDto, CreateUserDto, UpdateUserDto } from './user.dto';
 export class UserController {
   constructor(private readonly userService: UserService) {}
   @Get()
-  async getUsers(@Query('query') query: string): Promise<User[]> {
+  async getUsers(@Query('query') query: AddUserDto): Promise<User[]> {
     const users = await this.userService.getUsers(query);
     return users;
   }
@@ -34,7 +34,7 @@ export class UserController {
   }
 
   @Post('add')
-  async createUser(@Body() createUser: CreateUserDto): Promise<User> {
+  async createUser(@Body() createUser: CreateUserDto): Promise<User | string> {
     return await this.userService.createUser(createUser);
   }
 

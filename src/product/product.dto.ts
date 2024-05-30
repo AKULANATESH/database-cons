@@ -1,19 +1,41 @@
-import { IsString, IsNumber, IsNotEmpty } from 'class-validator';
+import { IsString, IsNumber, IsNotEmpty, IsIn } from 'class-validator';
 
-export class productdto {
+export class productDto {
   @IsString()
   @IsNotEmpty()
-  product_name: string;
+  productName: string;
 
   @IsNumber()
   @IsNotEmpty()
-  product_price: number;
+  productPrice: number;
 
   @IsString()
   @IsNotEmpty()
-  product_description: string;
+  productDescription: string;
 
   @IsString()
   @IsNotEmpty()
-  product_type: string;
+  @IsIn(
+    [
+      'footwear',
+      'clothes',
+      'mobiles',
+      'watches',
+      'accessories',
+      'homeneeds',
+      'domesticneeds',
+    ],
+    { message: 'Invalid product type' },
+  ) // List of allowed values
+  productType: string;
+}
+
+export class updateDto {
+  @IsNumber()
+  @IsNotEmpty()
+  productPrice: number;
+
+  @IsString()
+  @IsNotEmpty()
+  productDescription: string;
 }

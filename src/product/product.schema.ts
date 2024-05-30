@@ -1,5 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IsNotEmpty, IsString, IsNumber, MinLength } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  IsNumber,
+  MinLength,
+  IsIn,
+} from 'class-validator';
 import { Document, Types } from 'mongoose';
 
 @Schema()
@@ -8,23 +14,34 @@ export class Product extends Document<Types.ObjectId> {
   @IsNotEmpty()
   @IsString()
   @MinLength(3)
-  product_name: string;
+  productName: string;
 
   @Prop({ type: Number, required: true })
   @IsNotEmpty()
   @IsNumber()
-  product_price: number;
+  productPrice: number;
 
   @Prop({ type: String, required: true })
   @IsNotEmpty()
   @IsString()
-  product_description: string;
+  productDescription: string;
 
   @Prop({ type: String, required: true })
   @IsNotEmpty()
   @IsString()
-  @Prop()
-  product_type: string;
+  @IsIn(
+    [
+      'footwear',
+      'clothes',
+      'mobiles',
+      'watches',
+      'accessories',
+      'homeneeds',
+      'domesticneeds',
+    ],
+    { message: 'Invalid product type' },
+  )
+  productType: string;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
