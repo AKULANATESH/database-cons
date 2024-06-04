@@ -34,7 +34,7 @@ export class ProductService {
     return result;
   }
 
-  async deleteUser(productId: string): Promise<string> {
+  async deleteProduct(productId: string): Promise<string> {
     const result = await this.productRepository.delete(productId);
     if (!result) {
       throw new NotFoundException('product with id not found');
