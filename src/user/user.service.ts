@@ -18,13 +18,21 @@ export class UserService {
           { name: { $regex: query, $options: 'i' } },
           { email: { $regex: query, $options: 'i' } },
         ],
+        name: '',
+        email: '',
+        age: 0,
       });
       return searchResults;
     }
-    return await this.userRepository.find(User);
+    return await this.userRepository.find({
+      User,
+      name: '',
+      email: '',
+      age: 0,
+    });
   }
 
-  async getUser(userId: string): Promise<string | User> {
+  async getUser(userId: string): Promise<User> {
     const user = await this.userRepository.findById(userId);
     if (!user) {
       throw new NotFoundException('User with ID ${user_id} not found');
@@ -35,7 +43,7 @@ export class UserService {
   async addUser(newUser: AddUserDto): Promise<User | string> {
     const emailExists = await this.userRepository.findByEmail(newUser.email);
     if (emailExists) {
-      throw new ConflictException('Product with this email already exists');
+      throw new ConflictException('user with this email already exists');
     }
     const addedUser = await this.userRepository.create(newUser);
     return addedUser;

@@ -1,11 +1,4 @@
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsString,
-  IsNumber,
-  Min,
-  Max,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, IsNumber, Min } from 'class-validator';
 
 export class AddUserDto {
   @IsString()
@@ -19,7 +12,6 @@ export class AddUserDto {
 
   @IsNumber()
   @Min(5)
-  @Max(100)
   age: number;
 }
 
@@ -35,6 +27,11 @@ export class UpdateUserDto {
 
   @IsNumber()
   @Min(5)
-  @Max(100)
   age: number;
+}
+export interface UserSearchCriteria {
+  name?: string;
+  email?: string;
+  age?: number;
+  // Add other search criteria as needed
 }
