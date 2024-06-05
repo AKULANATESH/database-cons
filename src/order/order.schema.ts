@@ -1,5 +1,5 @@
 import { SchemaFactory, Schema, Prop } from '@nestjs/mongoose';
-import { IsNotEmpty, IsNumber, IsString, MinLength } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Document, Types } from 'mongoose';
 import { Product } from 'src/product/product.schema';
 import { User } from 'src/user/user.schema';
@@ -8,13 +8,11 @@ export class Order extends Document<Types.ObjectId> {
   @Prop({ type: String, required: true })
   @IsNotEmpty()
   @IsString()
-  @MinLength(3)
   productId: Product;
 
   @Prop({ type: String, required: true })
   @IsNotEmpty()
   @IsString()
-  @MinLength(3)
   userId: User;
 
   @Prop({ type: Number, required: true })

@@ -16,12 +16,12 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
-  async addproduct(@Body() createProduct: createProductDto): Promise<Product> {
+  async addProduct(@Body() createProduct: createProductDto): Promise<Product> {
     return await this.productService.addProduct(createProduct);
   }
 
   @Get('/:productType')
-  async getproducts(
+  async getProducts(
     @Param('productType') productType: string,
   ): Promise<Product[]> {
     return await this.productService.getProducts(productType);
@@ -35,7 +35,7 @@ export class ProductController {
   }
 
   @Put('/:id')
-  async updateproduct(
+  async updateProduct(
     @Body() productData: createUpdateDto,
     @Param('id') productId: string,
   ): Promise<Product> {

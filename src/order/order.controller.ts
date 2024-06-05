@@ -35,12 +35,12 @@ export class OrderController {
   async updateOrder(
     @Param('_id') orderId: string,
     @Body() updatedto: updateOrderDto,
-  ): Promise<Order | string> {
+  ): Promise<Order> {
     return await this.orderService.updateOrderById(orderId, updatedto);
   }
 
   @Get()
-  async getall(@Query('order') orders: createOrderDto): Promise<Order[]> {
+  async getAll(@Query('order') orders: createOrderDto): Promise<Order[]> {
     return await this.orderService.getAllOrders(orders);
   }
 }

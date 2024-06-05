@@ -6,27 +6,28 @@ import { createOrderDto } from './order.dto';
 
 @Injectable()
 export class OrderRepository {
-  constructor(@InjectModel(Order.name) private orderModule: Model<Order>) {}
+  constructor(@InjectModel(Order.name) private orderModel: Model<Order>) {}
 
   async create(order: createOrderDto): Promise<Order> {
-    return await this.orderModule.create(order);
+    return await this.orderModel.create(order);
   }
 
   async delete(orderId: string): Promise<Order> {
-    return await this.orderModule.findByIdAndDelete(orderId);
+    return await this.orderModel.findByIdAndDelete(orderId);
   }
 
   async findOrder(orderId: string): Promise<Order> {
-    return await this.orderModule.findById(orderId);
+    return await this.orderModel.findById(orderId);
   }
 
   async updateOrder(
     orderId: string,
     order: Partial<Omit<Order, '_id'>>,
   ): Promise<Order> {
-    return await this.orderModule.findByIdAndUpdate(orderId, order);
+    return await this.orderModel.findByIdAndUpdate(orderId, order);
   }
+
   async getAllOrders(order: createOrderDto): Promise<Order[]> {
-    return await this.orderModule.find({ order });
+    return await this.orderModel.find(order);
   }
 }

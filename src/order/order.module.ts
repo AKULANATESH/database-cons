@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { MongooseModule } from '@nestjs/mongoose';
-import { OrderRepository } from './order.reo';
+import { OrderRepository } from './order.repository';
 import { OrderController } from './order.controller';
 import { OrderService } from './order.service';
 import { Order, OrderSchema } from './order.schema';
