@@ -20,11 +20,11 @@ export class ProductService {
     return await this.productRepository.findByName(productName);
   }
 
-  async updateProductByName(
+  async updateProduct(
     productId: string,
     updateData: Partial<Product>,
   ): Promise<Product> {
-    const result = await this.productRepository.updateProductByName(
+    const result = await this.productRepository.updateProduct(
       productId,
       updateData,
     );

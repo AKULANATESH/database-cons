@@ -12,7 +12,7 @@ export class OrderService {
     return await this.orderRepository.create(order);
   }
 
-  async deleteOrder(orderId: string): Promise<Order | string> {
+  async deleteOrder(orderId: string): Promise<string> {
     const order = await this.orderRepository.delete(orderId);
     if (!order) {
       throw new NotFoundException('User with id not found');

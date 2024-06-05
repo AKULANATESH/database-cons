@@ -27,16 +27,16 @@ export class OrderController {
   }
 
   @Get('/:_id')
-  async getOrder(@Param('_id') orderId: string): Promise<Order | string> {
+  async getOrder(@Param('_id') orderId: string): Promise<Order> {
     return await this.orderService.getOrderById(orderId);
   }
 
   @Put('/:_id')
   async updateOrder(
     @Param('_id') orderId: string,
-    @Body() updatedto: updateOrderDto,
+    @Body() updateDto: updateOrderDto,
   ): Promise<Order> {
-    return await this.orderService.updateOrderById(orderId, updatedto);
+    return await this.orderService.updateOrderById(orderId, updateDto);
   }
 
   @Get()

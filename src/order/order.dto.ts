@@ -12,16 +12,6 @@ export class createOrderDto {
   @IsString()
   userId: string;
 
-  // @Transform(convertToObjectId)
-  // get productIdAsObjectId(): mongoose.Types.ObjectId {
-  //   return convertToObjectId(this.productId);
-  // }
-
-  // @Transform(convertToObjectId)
-  // get userIdAsObjectId(): mongoose.Types.ObjectId {
-  //   return convertToObjectId(this.userId);
-  // }
-
   @IsNotEmpty()
   @IsNumber()
   quantity: number;

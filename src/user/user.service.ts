@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { User } from './user.schema';
 import { UserRepository } from './user.repository';
-import { AddUserDto, CreateUserDto, UpdateUserDto } from './user.dto';
+import { AddUserDto, UpdateUserDto } from './user.dto';
 
 @Injectable()
 export class UserService {
@@ -43,19 +43,10 @@ export class UserService {
   async addUser(newUser: AddUserDto): Promise<User | string> {
     const emailExists = await this.userRepository.findByEmail(newUser.email);
     if (emailExists) {
-      throw new ConflictException('Product with this email already exists');
+      throw new ConflictException('user with this email already exists');
     }
     const addedUser = await this.userRepository.create(newUser);
     return addedUser;
-  }
-
-  async createUser(createUser: CreateUserDto): Promise<string | User> {
-    const emailExists = await this.userRepository.findByEmail(createUser.email);
-    if (emailExists) {
-      throw new ConflictException('Product with this email already exists');
-    }
-    const createUserResponse = await this.userRepository.create(createUser);
-    return createUserResponse;
   }
 
   async updateUser(updatedUser: UpdateUserDto, userId: string): Promise<User> {

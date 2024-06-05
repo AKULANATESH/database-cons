@@ -23,7 +23,7 @@ export class ProductRepository {
     return await this.productModel.find({ productName });
   }
 
-  async updateProductByName(
+  async updateProduct(
     _id: string,
     updateData: Partial<Omit<Product, '_id'>>,
   ): Promise<Product | null> {

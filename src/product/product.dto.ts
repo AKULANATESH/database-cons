@@ -30,7 +30,7 @@ export class createProductDto {
   productType: string;
 }
 
-export class createUpdateDto {
+export class updateProductDto {
   @IsNumber()
   @IsNotEmpty()
   productPrice: number;
