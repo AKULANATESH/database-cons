@@ -6,7 +6,6 @@ import {
   Post,
   Get,
   Put,
-  Query,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 
@@ -40,7 +39,7 @@ export class OrderController {
   }
 
   @Get()
-  async getAll(@Query('order') orders: createOrderDto): Promise<Order[]> {
-    return await this.orderService.getAllOrders(orders);
+  async findAll(): Promise<Order[]> {
+    return this.orderService.findAll();
   }
 }
