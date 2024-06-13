@@ -6,30 +6,24 @@ import {
 import { User } from './user.schema';
 import { UserRepository } from './user.repository';
 import { AddUserDto, UpdateUserDto } from './user.dto';
+import { FilterQuery } from 'mongoose';
 
 @Injectable()
 export class UserService {
   constructor(private userRepository: UserRepository) {}
 
-  async getUsers(query: string): Promise<User[]> {
+  async getUsersByQuery(query: string): Promise<User[]> {
     if (query) {
-      const searchResults = await this.userRepository.find({
+      const searchRegex = new RegExp(query, 'i');
+      const filter: FilterQuery<Document> = {
         $or: [
-          { name: { $regex: query, $options: 'i' } },
-          { email: { $regex: query, $options: 'i' } },
+          { name: { $regex: searchRegex } },
+          { email: { $regex: searchRegex } },
         ],
-        name: '',
-        email: '',
-        age: 0,
-      });
-      return searchResults;
+      };
+      return this.userRepository.findAll(filter);
     }
-    return await this.userRepository.find({
-      User,
-      name: '',
-      email: '',
-      age: 0,
-    });
+    return this.userRepository.findAll();
   }
 
   async getUser(userId: string): Promise<User> {

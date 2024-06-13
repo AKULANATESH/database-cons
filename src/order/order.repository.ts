@@ -17,7 +17,11 @@ export class OrderRepository {
   }
 
   async findOrder(orderId: string): Promise<Order> {
-    return await this.orderModel.findById(orderId);
+    return await this.orderModel
+      .findById(orderId)
+      .populate('userId')
+      .populate('productId')
+      .exec();
   }
 
   async updateOrder(
@@ -26,8 +30,11 @@ export class OrderRepository {
   ): Promise<Order> {
     return await this.orderModel.findByIdAndUpdate(orderId, order);
   }
-
-  async getAllOrders(order: createOrderDto): Promise<Order[]> {
-    return await this.orderModel.find(order);
+  async find(): Promise<Order[]> {
+    return this.orderModel
+      .find()
+      .populate('userId')
+      .populate('productId')
+      .exec();
   }
 }

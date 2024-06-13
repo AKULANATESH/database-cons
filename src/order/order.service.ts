@@ -31,7 +31,7 @@ export class OrderService {
     return await this.orderRepository.updateOrder(orderId, order);
   }
 
-  async getAllOrders(orders: createOrderDto): Promise<Order[]> {
-    return await this.orderRepository.getAllOrders(orders);
+  async findAll(): Promise<Order[]> {
+    return this.orderRepository.find();
   }
 }
