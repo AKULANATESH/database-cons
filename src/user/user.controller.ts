@@ -19,7 +19,7 @@ export class UserController {
 
   @Get()
   async findAll(@Query('query') query: string): Promise<User[]> {
-    return this.userService.getUsersByQuery(query);
+    return await this.userService.getUsersByQuery(query);
   }
 
   @Get('/:id')
