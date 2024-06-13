@@ -36,6 +36,6 @@ export class UserRepository {
 
   async findAll(filter?: FilterQuery<Document>): Promise<User[]> {
     // Assume you have a User model from Mongoose
-    return await this.userModel.find(filter).exec();
+    return await this.userModel.find(filter);
   }
 }

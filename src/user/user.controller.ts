@@ -18,7 +18,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  async findAll(@Query('q') query: string): Promise<User[]> {
+  async findAll(@Query('query') query: string): Promise<User[]> {
     return this.userService.getUsersByQuery(query);
   }
 
