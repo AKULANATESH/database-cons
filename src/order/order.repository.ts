@@ -20,8 +20,7 @@ export class OrderRepository {
     return await this.orderModel
       .findById(orderId)
       .populate('userId')
-      .populate('productId')
-      .exec();
+      .populate('productId');
   }
 
   async updateOrder(
@@ -31,10 +30,6 @@ export class OrderRepository {
     return await this.orderModel.findByIdAndUpdate(orderId, order);
   }
   async find(): Promise<Order[]> {
-    return this.orderModel
-      .find()
-      .populate('userId')
-      .populate('productId')
-      .exec();
+    return this.orderModel.find().populate('userId').populate('productId');
   }
 }
