@@ -1,5 +1,5 @@
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { User } from './user.schema';
 import { AddUserDto } from './user.dto';
@@ -32,5 +32,10 @@ export class UserRepository {
   async delete(id: string): Promise<string> {
     await this.userModel.findByIdAndDelete(id);
     return `User with ID ${id} deleted`;
+  }
+
+  async findAll(filter?: FilterQuery<Document>): Promise<User[]> {
+    // Assume you have a User model from Mongoose
+    return await this.userModel.find(filter);
   }
 }
