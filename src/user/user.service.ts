@@ -3,27 +3,18 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { User } from './user.schema';
+// import { User } from './user.schema';
 import { UserRepository } from './user.repository';
 import { AddUserDto, UpdateUserDto } from './user.dto';
-import { FilterQuery } from 'mongoose';
+// import { FilterQuery } from '@prisma/client';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class UserService {
   constructor(private userRepository: UserRepository) {}
 
   async getUsersByQuery(query: string): Promise<User[]> {
-    if (query) {
-      const searchRegex = new RegExp(query, 'i');
-      const filter: FilterQuery<Document> = {
-        $or: [
-          { name: { $regex: searchRegex } },
-          { email: { $regex: searchRegex } },
-        ],
-      };
-      return this.userRepository.findAll(filter);
-    }
-    return this.userRepository.findAll();
+    return await this.userRepository.findAll(query);
   }
 
   async getUser(userId: string): Promise<User> {

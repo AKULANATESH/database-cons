@@ -1,0 +1,52 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// User model
+model User {
+  id     String  @id @default(cuid())
+  name   String
+  email  String  @unique
+  age    Int
+  orders Order[]
+
+  @@unique([id])
+}
+
+model Product {
+  id                 String        @id @default(cuid())
+  productName        String
+  productPrice       Float
+  productDescription String
+  productType        ProductType
+  orders             Order[]
+
+  @@unique([id, productName]) // Example of composite unique constraint
+}
+
+model Order {
+  id         String  @id @default(cuid())
+  productId  String
+  product    Product @relation(fields: [productId], references: [id])
+  userId     String
+  user       User    @relation(fields: [userId], references: [id])
+  quantity   Int
+  totalPrice Float
+
+  @@unique([productId, userId]) // Example of composite unique constraint
+}
+
+enum ProductType {
+  FOOTWEAR
+  CLOTHES
+  MOBILES
+  WATCHES
+  ACCESSORIES
+  HOMENEEDS
+  DOMESTICNEEDS
+}

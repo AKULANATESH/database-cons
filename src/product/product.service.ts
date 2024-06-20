@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { createProductDto } from './product.dto';
-import { Product } from './product.schema';
+// import { Product } from './product.schema';
 import { ProductRepository } from './product.repository';
+import { Product, ProductType } from '@prisma/client';
 
 @Injectable()
 export class ProductService {
@@ -12,7 +13,7 @@ export class ProductService {
     return addedProduct;
   }
 
-  async getProducts(productType: string): Promise<Product[]> {
+  async getProducts(productType: ProductType): Promise<Product[]> {
     return await this.productRepository.findByType(productType);
   }
 

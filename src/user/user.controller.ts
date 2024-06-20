@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 
 import { UserService } from './user.service';
-import { User } from './user.schema';
+import { User } from '@prisma/client';
 import { AddUserDto, UpdateUserDto } from './user.dto';
 
 @Controller('user')
@@ -21,7 +21,6 @@ export class UserController {
   async findAll(@Query('query') query: string): Promise<User[]> {
     return await this.userService.getUsersByQuery(query);
   }
-
   @Get('/:id')
   async getUser(@Param('id') userId: string): Promise<string | User> {
     const result = await this.userService.getUser(userId);
