@@ -1,5 +1,5 @@
-import { IsString, IsNumber, IsNotEmpty, IsIn } from 'class-validator';
-
+import { IsString, IsNumber, IsNotEmpty, IsEnum } from 'class-validator';
+import { ProductType } from '@prisma/client';
 export class createProductDto {
   @IsString()
   @IsNotEmpty()
@@ -15,19 +15,8 @@ export class createProductDto {
 
   @IsString()
   @IsNotEmpty()
-  @IsIn(
-    [
-      'footwear',
-      'clothes',
-      'mobiles',
-      'watches',
-      'accessories',
-      'homeneeds',
-      'domesticneeds',
-    ],
-    { message: 'Invalid product type' },
-  ) // List of allowed values
-  productType: string;
+  @IsEnum(ProductType)
+  productType: ProductType;
 }
 
 export class updateProductDto {

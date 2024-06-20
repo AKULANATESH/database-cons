@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 
-import { Order } from './order.schema';
+import { Order } from '@prisma/client';
 import { createOrderDto, updateOrderDto } from './order.dto';
 
 @Controller('order')

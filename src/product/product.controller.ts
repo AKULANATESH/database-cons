@@ -9,7 +9,8 @@ import {
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { createProductDto, updateProductDto } from './product.dto';
-import { Product } from './product.schema';
+// import { Product } from './product.schema';
+import { Product, ProductType } from '@prisma/client';
 
 @Controller('product')
 export class ProductController {
@@ -22,7 +23,7 @@ export class ProductController {
 
   @Get('/:productType')
   async getProducts(
-    @Param('productType') productType: string,
+    @Param('productType') productType: ProductType,
   ): Promise<Product[]> {
     return await this.productService.getProducts(productType);
   }
