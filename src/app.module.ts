@@ -6,9 +6,16 @@ import { UserModule } from './user/user.module';
 import { ProductModule } from './product/product.module';
 import { OrderModule } from './order/order.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { OrderItemModule } from './orderItem/orderItem.module';
 
 @Module({
-  imports: [UserModule, ProductModule, OrderModule, PrismaModule],
+  imports: [
+    UserModule,
+    ProductModule,
+    OrderModule,
+    PrismaModule,
+    OrderItemModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

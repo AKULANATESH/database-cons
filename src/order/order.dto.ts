@@ -6,19 +6,15 @@ import { IsString, IsNumber, IsNotEmpty } from 'class-validator';
 export class createOrderDto {
   @IsNotEmpty()
   @IsString()
-  productId: string;
-
-  @IsNotEmpty()
-  @IsString()
   userId: string;
 
   @IsNotEmpty()
   @IsNumber()
-  quantity: number;
+  totalPrice: number;
 
   @IsNotEmpty()
-  @IsNumber()
-  totalPrice: number;
+  @IsString()
+  OrderItemId: string;
 }
 export class updateOrderDto {
   @IsNotEmpty()

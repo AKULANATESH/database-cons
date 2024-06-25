@@ -10,6 +10,10 @@ export class OrderRepository {
   async create(order: createOrderDto): Promise<Order> {
     return await this.prisma.order.create({
       data: order,
+      include: {
+        user: true,
+        orderItem: true,
+      },
     });
   }
 
@@ -24,7 +28,6 @@ export class OrderRepository {
       where: { id: orderId },
       include: {
         user: true,
-        product: true,
       },
     });
   }
@@ -43,7 +46,6 @@ export class OrderRepository {
     return await this.prisma.order.findMany({
       include: {
         user: true,
-        product: true,
       },
     });
   }
